@@ -1,9 +1,26 @@
+import { authModalState } from '@/atoms/authmodal';
+import { LOGIN_VIEW } from '@/lib/constants/authModalViewStates';
 import { Box, Input, Button, Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 type Props = {};
 
 const SignIn = (props: Props) => {
+	const setAuthModalState = useSetRecoilState(authModalState);
+	const [signInForm, setSignInForm] = useState({
+		email: '',
+		password: '',
+		confirmPassword: '',
+	});
+
+	const handelFormChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
+		setSignInForm (prev => ({
+			...prev,
+			[event.target.name]: event.target.value,
+		}));
+	}
+
 	return (
 		<Box>
 			<form>
@@ -25,6 +42,8 @@ const SignIn = (props: Props) => {
 					}}
 					bg="gray.100"
 					mb="3"
+					value={signInForm.email}
+					onChange={handelFormChange}
 				/>
 				<Input
 					required
@@ -44,10 +63,12 @@ const SignIn = (props: Props) => {
 					}}
 					bg="gray.100"
 					mb="3"
+					value={signInForm.email}
+					onChange={handelFormChange}
 				/>
 				<Input
 					required
-					placeholder="Confirm assword"
+					placeholder="Confirm password"
 					type="password"
 					name="confirmPassword"
 					_placeholder={{ color: 'gray.700' }}
@@ -63,8 +84,16 @@ const SignIn = (props: Props) => {
 					}}
 					bg="gray.100"
 					mb="3"
+					value={signInForm.email}
+					onChange={handelFormChange}
 				/>
-				<Button width="100%" height="36px" mt="2" mb="2" type="submit">
+				<Button
+					fontSize="16"
+					width="100%"
+					height="36px"
+					mt="2"
+					mb="2"
+					type="submit">
 					Sign Up
 				</Button>
 			</form>
@@ -72,7 +101,13 @@ const SignIn = (props: Props) => {
 				<Text mr="2" fontWeight="400" color="black">
 					Already An Redditor?
 				</Text>
-				<Text color="blue.500" fontWeight="700" cursor="pointer">
+				<Text
+					color="blue.500"
+					fontWeight="700"
+					cursor="pointer"
+					onClick={() =>
+						setAuthModalState(prev => ({ ...prev, view: LOGIN_VIEW }))
+					}>
 					Log In
 				</Text>
 			</Flex>
