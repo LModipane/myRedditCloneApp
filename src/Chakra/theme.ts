@@ -13,11 +13,12 @@ export const theme = extendTheme({
 		body: 'Open Sans, sans-serif',
 	},
 	styles: {
-		global: () => {
-			body: {
-				bg: 'gray.200'; //here is the reddit backdrop coluor
-			}
-		},
+        global: () => ({
+            body: {
+                bg: "gray.200",
+                color: "black",
+            }
+        })
     },
     components: {
         // GamepadButton
