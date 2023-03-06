@@ -10,7 +10,7 @@ import {
 	ModalOverlay,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
-import OAuthButtons from './OAuthButtons';
+import AuthInputs from './AuthInputs';
 
 type Props = {};
 
@@ -44,8 +44,8 @@ const AuthModal = (props: Props) => {
 							justify="center"
 							width="70&"
 						>
-							<OAuthButtons />
-							{/* <AuthInputs /> */}
+							{/* <OAuthButtons /> */}
+							<AuthInputs />
 							{/* <ResetPasswod/> */}
 						</Flex>
 					</ModalBody>
