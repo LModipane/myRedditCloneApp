@@ -8,7 +8,7 @@ type Props = {};
 const RightContent = (props: Props) => {
 	return (
 		<>
-			<AuthModal/>
+			{/* <AuthModal/> */}
             <Flex justify="center" align="center">
                 <AuthButtons/>
             </Flex>
