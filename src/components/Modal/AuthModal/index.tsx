@@ -3,10 +3,12 @@ import {
 	Modal,
 	ModalBody,
 	ModalCloseButton,
-	ModalContent, ModalHeader,
-	ModalOverlay
+	ModalContent,
+	ModalHeader,
+	ModalOverlay,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
+import OAuthButtons from './OAuthButtons';
 
 type Props = {};
 
@@ -23,9 +25,17 @@ const AuthModal = (props: Props) => {
 			<Modal isOpen={modalState.open} onClose={handleClose}>
 				<ModalOverlay />
 				<ModalContent bg="white">
-					<ModalHeader>title</ModalHeader>
+					<ModalHeader>
+						{modalState.view === 'login' && 'Log in'}
+						{modalState.view === 'signUp' && 'sign up'}
+						{modalState.view === 'resetPassword' && 'reset password'}
+					</ModalHeader>
 					<ModalCloseButton />
-					<ModalBody> here is auth modal </ModalBody>
+					<ModalBody> 
+						<OAuthButtons />
+						{/* <AuthInputs /> */}
+						{/* <ResetPasswod/> */}
+					</ModalBody>
 				</ModalContent>
 			</Modal>
 		</>
