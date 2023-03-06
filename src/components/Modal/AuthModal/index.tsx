@@ -27,7 +27,7 @@ const AuthModal = (props: Props) => {
 			<Modal isOpen={modalState.open} onClose={handleClose}>
 				<ModalOverlay />
 				<ModalContent bg="white">
-					<ModalHeader>
+					<ModalHeader textAlign="center">
 						{modalState.view === LOGIN_VIEW && 'Log in'}
 						{modalState.view === SIGNIN_VIEW && 'sign up'}
 						{modalState.view === RESET_PASSWORD && 'reset password'}
@@ -37,6 +37,7 @@ const AuthModal = (props: Props) => {
 						display="flex"
 						flexDirection="column"
 						alignItems="center"
+						pb="6"
 						justifyContent="center">
 						<Flex
 							direction="column"
