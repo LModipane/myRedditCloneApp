@@ -29,11 +29,10 @@ const Login = (props: Props) => {
 				<Input
 					name="email"
 					type="email"
-					placeholder="enter email"
+					placeholder="Enter email"
 					value={loginForm.email}
 					onChange={handelFormChange}
 					required
-					fontSize="10pt"
 					_hover={{
 						bg: 'gray.50',
 						border: '1px solid',
@@ -51,11 +50,10 @@ const Login = (props: Props) => {
 				<Input
 					name="password"
 					type="password"
-					placeholder="enter password"
+					placeholder="Enter password"
 					value={loginForm.password}
 					onChange={handelFormChange}
 					required
-					fontSize="10pt"
 					_hover={{
 						bg: 'gray.50',
 						border: '1px solid',
@@ -70,7 +68,7 @@ const Login = (props: Props) => {
 					bg="gray.100"
 					mb="3"
 				/>
-				<Button width="100%" height="36px" mt="2" mb="2" type="submit">
+				<Button fontSize="16" width="100%" height="36px" mt="2" mb="2" type="submit">
 					Log in
 				</Button>
 			</form>

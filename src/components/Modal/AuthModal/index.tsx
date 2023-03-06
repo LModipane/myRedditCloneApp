@@ -28,8 +28,8 @@ const AuthModal = (props: Props) => {
 				<ModalOverlay />
 				<ModalContent bg="white">
 					<ModalHeader textAlign="center">
-						{modalState.view === LOGIN_VIEW && 'Log in'}
-						{modalState.view === SIGNIN_VIEW && 'sign up'}
+						{modalState.view === LOGIN_VIEW && 'Log In'}
+						{modalState.view === SIGNIN_VIEW && 'Sign Up'}
 						{modalState.view === RESET_PASSWORD && 'reset password'}
 					</ModalHeader>
 					<ModalCloseButton />
