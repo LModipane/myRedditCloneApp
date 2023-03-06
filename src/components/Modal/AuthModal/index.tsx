@@ -1,5 +1,9 @@
 import { authModalState } from '@/atoms/authmodal';
-import { LOGIN_VIEW, RESET_PASSWORD, SIGNIN_VIEW } from '@/lib/constants/authModalViewStates';
+import {
+	LOGIN_VIEW,
+	RESET_PASSWORD,
+	SIGNIN_VIEW,
+} from '@/lib/constants/authModalViewStates';
 import {
 	Flex,
 	Modal,
@@ -11,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import AuthInputs from './AuthInputs';
+import OAuthButtons from './OAuthButtons';
 
 type Props = {};
 
@@ -43,9 +48,8 @@ const AuthModal = (props: Props) => {
 							direction="column"
 							align="center"
 							justify="center"
-							width="70&"
-						>
-							{/* <OAuthButtons /> */}
+							width="70&">
+							<OAuthButtons />
 							<AuthInputs />
 							{/* <ResetPasswod/> */}
 						</Flex>
