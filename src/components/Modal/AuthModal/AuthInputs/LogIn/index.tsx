@@ -1,9 +1,13 @@
+import { authModalState } from '@/atoms/authmodal';
+import { SIGNIN_VIEW } from '@/lib/constants/authModalViewStates';
 import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 type Props = {};
 
 const Login = (props: Props) => {
+	const setAuthModalState = useSetRecoilState(authModalState)
 	const [loginForm, setLoginForm] = useState({
 		email: '',
 		password: '',
@@ -16,6 +20,8 @@ const Login = (props: Props) => {
 			[event.target.name]: event.target.value,
 		}));
 	};
+
+	//add fire base logic to form 
 
 	return (
 		<Box alignItems="center">
@@ -70,7 +76,10 @@ const Login = (props: Props) => {
 			</form>
 			<Flex justify="center" mt="4" fontSize="12pt">
 				<Text mr="2" fontWeight="400" color="black">New here?</Text>
-				<Text color="blue.500" fontWeight="700" cursor="pointer">
+				<Text color="blue.500" fontWeight="700" cursor="pointer" onClick={() => setAuthModalState(prev => ({
+					...prev,
+					view: SIGNIN_VIEW,
+				}))}>
 					Sign Up
 				</Text>
 			</Flex>
