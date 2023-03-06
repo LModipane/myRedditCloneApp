@@ -1,4 +1,5 @@
 import { authModalState } from '@/atoms/authmodal';
+import { LOGIN_VIEW, RESET_PASSWORD, SIGNIN_VIEW } from '@/lib/constants/authModalViewStates';
 import {
 	Flex,
 	Modal,
@@ -27,9 +28,9 @@ const AuthModal = (props: Props) => {
 				<ModalOverlay />
 				<ModalContent bg="white">
 					<ModalHeader>
-						{modalState.view === 'login' && 'Log in'}
-						{modalState.view === 'signUp' && 'sign up'}
-						{modalState.view === 'resetPassword' && 'reset password'}
+						{modalState.view === LOGIN_VIEW && 'Log in'}
+						{modalState.view === SIGNIN_VIEW && 'sign up'}
+						{modalState.view === RESET_PASSWORD && 'reset password'}
 					</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody
