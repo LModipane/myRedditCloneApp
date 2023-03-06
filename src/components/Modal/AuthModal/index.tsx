@@ -1,5 +1,6 @@
 import { authModalState } from '@/atoms/authmodal';
 import {
+	Flex,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
@@ -31,10 +32,21 @@ const AuthModal = (props: Props) => {
 						{modalState.view === 'resetPassword' && 'reset password'}
 					</ModalHeader>
 					<ModalCloseButton />
-					<ModalBody> 
-						<OAuthButtons />
-						{/* <AuthInputs /> */}
-						{/* <ResetPasswod/> */}
+					<ModalBody
+						display="flex"
+						flexDirection="column"
+						alignItems="center"
+						justifyContent="center">
+						<Flex
+							direction="column"
+							align="center"
+							justify="center"
+							width="70&"
+						>
+							<OAuthButtons />
+							{/* <AuthInputs /> */}
+							{/* <ResetPasswod/> */}
+						</Flex>
 					</ModalBody>
 				</ModalContent>
 			</Modal>
