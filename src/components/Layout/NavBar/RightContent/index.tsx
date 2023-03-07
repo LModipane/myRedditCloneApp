@@ -5,6 +5,7 @@ import AuthButtons from './AuthButtons';
 import { signOut, type User } from 'firebase/auth';
 import { auth } from '@/firebase/clientApp';
 import RedditIcons from './Reddit-Icons';
+import UserMenu from './UserMenu';
 
 type Props = {
 	user?: User | null;
@@ -15,7 +16,8 @@ const RightContent = ({ user }: Props) => {
 		<>
 			<AuthModal />
 			<Flex justify="center" align="center">
-				{true ? <RedditIcons /> : <AuthButtons />}
+				{user ? <RedditIcons /> : <AuthButtons />}
+				<UserMenu user={user} />
 			</Flex>
 		</>
 	);
