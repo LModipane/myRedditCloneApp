@@ -1,7 +1,10 @@
 import { authModalState } from '@/atoms/authmodal';
+import { auth } from '@/firebase/clientApp';
 import { LOGIN_VIEW } from '@/lib/constants/authModalViewStates';
-import { Box, Input, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
+import { color } from 'framer-motion';
 import React, { useState } from 'react';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useSetRecoilState } from 'recoil';
 
 type Props = {};
@@ -13,17 +16,45 @@ const SignIn = (props: Props) => {
 		password: '',
 		confirmPassword: '',
 	});
+	const [createUserWithEmailAndPassword, user, loading, error] =
+		useCreateUserWithEmailAndPassword(auth);
 
-	const handelFormChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
-		setSignInForm (prev => ({
+	const [errorMessage, setErrorMessage] = useState('');
+
+	const handelFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSignInForm(prev => ({
 			...prev,
 			[event.target.name]: event.target.value,
 		}));
-	}
+	};
+
+	//connect form to firebase
+
+	const handelSubmit = async (event: React.FormEvent) => {
+		event.preventDefault();
+		if (errorMessage) setErrorMessage('');
+		if (signInForm.confirmPassword !== signInForm.password) {
+			setErrorMessage('Passwords do not match');
+			return;
+		}
+		if (signInForm.password.length < 6) {
+			setErrorMessage('Invalid password length');
+			return;
+		}
+		try {
+			await createUserWithEmailAndPassword(
+				signInForm.email,
+				signInForm.password,
+			);
+		} catch (error: any) {
+			setErrorMessage(error.code);
+			console.log(error);
+		}
+	};
 
 	return (
 		<Box>
-			<form>
+			<form onSubmit={handelSubmit}>
 				<Input
 					required
 					name="email"
@@ -39,6 +70,7 @@ const SignIn = (props: Props) => {
 						outline: 'none',
 						border: '1px solid',
 						borderColor: 'blue.500',
+						bg: 'gray.100',
 					}}
 					bg="gray.100"
 					mb="3"
@@ -49,6 +81,11 @@ const SignIn = (props: Props) => {
 					required
 					placeholder="Enter password"
 					type="password"
+					__css={{
+						'&::-webkit-autofill': {
+							backgroundColor: 'yellow',
+						},
+					}}
 					name="password"
 					_placeholder={{ color: 'gray.700' }}
 					_hover={{
@@ -63,7 +100,7 @@ const SignIn = (props: Props) => {
 					}}
 					bg="gray.100"
 					mb="3"
-					value={signInForm.email}
+					value={signInForm.password}
 					onChange={handelFormChange}
 				/>
 				<Input
@@ -84,15 +121,23 @@ const SignIn = (props: Props) => {
 					}}
 					bg="gray.100"
 					mb="3"
-					value={signInForm.email}
+					value={signInForm.confirmPassword}
 					onChange={handelFormChange}
 				/>
+				{errorMessage && (
+					<Text textAlign="center" color="red" fontSize="13pt">
+						{errorMessage}
+					</Text>
+				)}
 				<Button
 					fontSize="16"
 					width="100%"
 					height="36px"
 					mt="2"
+					colorScheme="blue"
 					mb="2"
+					isLoading={loading}
+					loadingText="waiting..."
 					type="submit">
 					Sign Up
 				</Button>
