@@ -32,8 +32,6 @@ const Login = (props: Props) => {
 		}));
 	};
 
-	//add fire base logic to form
-	console.log(error);
 
 	return (
 		<Box alignItems="center">
