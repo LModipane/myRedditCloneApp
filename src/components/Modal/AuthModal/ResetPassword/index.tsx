@@ -34,6 +34,8 @@ const RestPassword = (props: Props) => {
 						placeholder="email"
 						type="email"
 						mb={2}
+						onChange={event => setEmail(event.target.value)}
+						value={email}
 						fontSize="10pt"
 						_placeholder={{ color: 'gray.500' }}
 						_hover={{
@@ -79,12 +81,15 @@ const RestPassword = (props: Props) => {
 					LOGIN
 				</Text>
 				<Icon as={BsDot} />
-                <Text fontSize="12" fontWeight="600" onClick={() => {
-                    setAuthModalState(prev => ({
-                        ...prev,
-                        view: SIGNIN_VIEW
-                    }))
-                }}>
+				<Text
+					fontSize="12"
+					fontWeight="600"
+					onClick={() => {
+						setAuthModalState(prev => ({
+							...prev,
+							view: SIGNIN_VIEW,
+						}));
+					}}>
 					SIGN UP
 				</Text>
 			</Flex>
