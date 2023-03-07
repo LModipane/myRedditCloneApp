@@ -1,5 +1,6 @@
 import { authModalState } from '@/atoms/authmodal';
 import { auth } from '@/firebase/clientApp';
+import { fireBaseError } from '@/firebase/error';
 import { LOGIN_VIEW } from '@/lib/constants/authModalViewStates';
 import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
 import { color } from 'framer-motion';
@@ -16,7 +17,7 @@ const SignIn = (props: Props) => {
 		password: '',
 		confirmPassword: '',
 	});
-	const [createUserWithEmailAndPassword, user, loading, error] =
+	const [createUserWithEmailAndPassword, user, loading, userError] =
 		useCreateUserWithEmailAndPassword(auth);
 
 	const [errorMessage, setErrorMessage] = useState('');
@@ -37,10 +38,7 @@ const SignIn = (props: Props) => {
 			setErrorMessage('Passwords do not match');
 			return;
 		}
-		if (signInForm.password.length < 6) {
-			setErrorMessage('Invalid password length');
-			return;
-		}
+
 		try {
 			await createUserWithEmailAndPassword(
 				signInForm.email,
@@ -51,6 +49,8 @@ const SignIn = (props: Props) => {
 			console.log(error);
 		}
 	};
+
+	console.log(userError);
 
 	return (
 		<Box>
@@ -124,11 +124,12 @@ const SignIn = (props: Props) => {
 					value={signInForm.confirmPassword}
 					onChange={handelFormChange}
 				/>
-				{errorMessage && (
-					<Text textAlign="center" color="red" fontSize="13pt">
-						{errorMessage}
-					</Text>
-				)}
+
+				<Text textAlign="center" color="red" fontSize="13pt">
+					{errorMessage ||
+						fireBaseError[userError?.message as keyof typeof fireBaseError]}
+				</Text>
+
 				<Button
 					fontSize="16"
 					width="100%"
