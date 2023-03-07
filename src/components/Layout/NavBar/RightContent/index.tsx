@@ -2,11 +2,12 @@ import React from 'react';
 import { Button, Flex } from '@chakra-ui/react';
 import AuthModal from '@/components/Modal/AuthModal';
 import AuthButtons from './AuthButtons';
-import { signOut } from 'firebase/auth';
+import { signOut, type User } from 'firebase/auth';
 import { auth } from '@/firebase/clientApp';
+import RedditIcons from './Reddit-Icons';
 
 type Props = {
-	user: unknown;
+	user?: User | null;
 };
 
 const RightContent = ({ user }: Props) => {
@@ -14,11 +15,7 @@ const RightContent = ({ user }: Props) => {
 		<>
 			<AuthModal />
 			<Flex justify="center" align="center">
-				{user ? (
-					<Button onClick={() => signOut(auth)}>Log out</Button>
-				) : (
-					<AuthButtons />
-				)}
+				{true ? <RedditIcons /> : <AuthButtons />}
 			</Flex>
 		</>
 	);
