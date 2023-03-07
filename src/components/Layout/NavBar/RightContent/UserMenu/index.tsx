@@ -44,7 +44,7 @@ const UserMenu = ({ user }: Props) => {
 									color="gray.300"
 									as={FaRedditSquare}
 								/>
-								<Flex>
+								<Flex display={{ base: 'none', md: 'flex' }}>
 									<Text>{user?.displayName || user.email?.split('@')[0]}</Text>
 									<Flex>
 										<Icon as={IoSparkles} color="brand.100" mr="1" />
