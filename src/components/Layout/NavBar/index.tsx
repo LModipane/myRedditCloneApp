@@ -26,7 +26,7 @@ const NavBar = (props: Props) => {
 					display={{ md: 'none', base: 'unset' }}
 				/>
 			</Flex>
-			<Directory/>
+			{user && <Directory />}
 			<SearchInput />
 			<RightContent user={user} />
 		</Flex>
