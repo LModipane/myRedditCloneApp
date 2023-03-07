@@ -3,15 +3,26 @@ import { SIGNIN_VIEW } from '@/lib/constants/authModalViewStates';
 import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { auth } from '@/firebase/clientApp';
+import { fireBaseError } from '@/firebase/error';
 
 type Props = {};
 
 const Login = (props: Props) => {
-	const setAuthModalState = useSetRecoilState(authModalState)
+	const setAuthModalState = useSetRecoilState(authModalState);
 	const [loginForm, setLoginForm] = useState({
 		email: '',
 		password: '',
 	});
+
+	const [signInWithEmailAndPassword, user, loading, error] =
+		useSignInWithEmailAndPassword(auth);
+
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		signInWithEmailAndPassword(loginForm.email, loginForm.password);
+	};
 
 	const handelFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		//update state
@@ -21,11 +32,12 @@ const Login = (props: Props) => {
 		}));
 	};
 
-	//add fire base logic to form 
+	//add fire base logic to form
+	console.log(error);
 
 	return (
 		<Box alignItems="center">
-			<form>
+			<form onSubmit={handleSubmit}>
 				<Input
 					name="email"
 					type="email"
@@ -68,16 +80,34 @@ const Login = (props: Props) => {
 					bg="gray.100"
 					mb="3"
 				/>
-				<Button fontSize="16" width="100%" height="36px" mt="2" mb="2" type="submit">
+				<Text textAlign="center" color="red" fontSize="13pt">
+					{fireBaseError[error?.message as keyof typeof fireBaseError]}
+				</Text>
+				<Button
+					fontSize="16"
+					width="100%"
+					height="36px"
+					isLoading={loading}
+					mt="2"
+					mb="2"
+					type="submit">
 					Log in
 				</Button>
 			</form>
 			<Flex justify="center" mt="4" fontSize="12pt">
-				<Text mr="2" fontWeight="400" color="black">New here?</Text>
-				<Text color="blue.500" fontWeight="700" cursor="pointer" onClick={() => setAuthModalState(prev => ({
-					...prev,
-					view: SIGNIN_VIEW,
-				}))}>
+				<Text mr="2" fontWeight="400" color="black">
+					New here?
+				</Text>
+				<Text
+					color="blue.500"
+					fontWeight="700"
+					cursor="pointer"
+					onClick={() =>
+						setAuthModalState(prev => ({
+							...prev,
+							view: SIGNIN_VIEW,
+						}))
+					}>
 					Sign Up
 				</Text>
 			</Flex>
