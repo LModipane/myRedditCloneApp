@@ -20,6 +20,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRecoilState } from 'recoil';
 import AuthInputs from './AuthInputs';
 import OAuthButtons from './OAuthButtons';
+import ResetPassword from './ResetPassword';
 
 type Props = {};
 
@@ -35,7 +36,7 @@ const AuthModal = (props: Props) => {
 
 	useEffect(() => {
 		if (user) handleClose();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 	return (
 		<>
@@ -45,7 +46,7 @@ const AuthModal = (props: Props) => {
 					<ModalHeader textAlign="center">
 						{modalState.view === LOGIN_VIEW && 'Log In'}
 						{modalState.view === SIGNIN_VIEW && 'Sign Up'}
-						{modalState.view === RESET_PASSWORD && 'reset password'}
+						{modalState.view === RESET_PASSWORD && 'Reset password'}
 					</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody
@@ -59,13 +60,17 @@ const AuthModal = (props: Props) => {
 							align="center"
 							justify="center"
 							width="70&">
-							<OAuthButtons />
-							<Text color="gray.500" mb="3">
-								{' '}
-								--or--{' '}
-							</Text>
-							<AuthInputs />
-							{/* <ResetPasswod/> */}
+							{modalState.view !== RESET_PASSWORD ? (
+								<>
+									<OAuthButtons />
+									<Text color="gray.500" mb="3">
+										--or--
+									</Text>
+									<AuthInputs />
+								</>
+							) : (
+								<ResetPassword />
+							)}
 						</Flex>
 					</ModalBody>
 				</ModalContent>

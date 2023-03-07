@@ -1,5 +1,8 @@
 import { authModalState } from '@/atoms/authmodal';
-import { SIGNIN_VIEW } from '@/lib/constants/authModalViewStates';
+import {
+	RESET_PASSWORD,
+	SIGNIN_VIEW,
+} from '@/lib/constants/authModalViewStates';
 import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
@@ -31,7 +34,6 @@ const Login = (props: Props) => {
 			[event.target.name]: event.target.value,
 		}));
 	};
-
 
 	return (
 		<Box alignItems="center">
@@ -92,6 +94,23 @@ const Login = (props: Props) => {
 					Log in
 				</Button>
 			</form>
+			<Flex justify="center" mb="2" align="center">
+				<Text fontSize="10pt" mr="1" fontWeight="500" color="gray.500"> 
+					Forgot your password?
+				</Text>
+				<Text
+					fontSize="10pt"
+					color="blue.500"
+					cursor="pointer"
+					onClick={() =>
+						setAuthModalState(prev => ({
+							...prev,
+							view: RESET_PASSWORD,
+						}))
+					}>
+					Reset
+				</Text>
+			</Flex>
 			<Flex justify="center" mt="4" fontSize="12pt">
 				<Text mr="2" fontWeight="400" color="black">
 					New here?
