@@ -16,18 +16,25 @@ const RestPassword = (props: Props) => {
 	const [sendPasswordResetEmail, sending, error] =
 		useSendPasswordResetEmail(auth);
 
+	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		await sendPasswordResetEmail(email);
+		setSuccess(true);
+	};
+
 	return (
 		<Flex direction="column" alignItems="center" width="100%">
 			<Icon as={BsReddit} color="brand.100" fontSize="40" mb="2" />
 			{/* <Text fontWeight="700"> Reset your Password</Text> */}
-			<Text fontSize="sm" textAlign="center" mb={2}>
+			<Text fontSize="m" textAlign="center"  mb={2}>
 				Enter the email associated with your account and we will send you a
 				reset link
 			</Text>
 			{success ? (
-				<Text mb={4}>Check your email 😂</Text>
+				<Text mb={4} fontSize="33">Check your email 🤓</Text>
 			) : (
-				<form style={{ width: '100%' }}>
+				<form style={{ width: '100%' }} onSubmit={onSubmit}>
 					<Input
 						required
 						name="email"
