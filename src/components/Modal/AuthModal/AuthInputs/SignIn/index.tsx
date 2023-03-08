@@ -1,10 +1,11 @@
 import { authModalState } from '@/atoms/authmodal';
-import { auth } from '@/firebase/clientApp';
+import { auth, firestore } from '@/firebase/clientApp';
 import { fireBaseError } from '@/firebase/error';
 import { LOGIN_VIEW } from '@/lib/constants/authModalViewStates';
 import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
-import { color } from 'framer-motion';
-import React, { useState } from 'react';
+import { User } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useSetRecoilState } from 'recoil';
 
@@ -17,7 +18,7 @@ const SignIn = (props: Props) => {
 		password: '',
 		confirmPassword: '',
 	});
-	const [createUserWithEmailAndPassword, user, loading, userError] =
+	const [createUserWithEmailAndPassword, userCred, loading, userError] =
 		useCreateUserWithEmailAndPassword(auth);
 
 	const [errorMessage, setErrorMessage] = useState('');
@@ -50,6 +51,17 @@ const SignIn = (props: Props) => {
 		}
 	};
 
+	//enter user data to firebase firestore
+	const createUserDocument = async (user: User) => {
+		await addDoc(
+			collection(firestore, 'users'), //this line creates the document collection
+			JSON.parse(JSON.stringify(user)), //this line create an entry in the collection
+		);
+	};
+
+	useEffect(() => {
+		if (userCred) createUserDocument(userCred.user);
+	}, [userCred]);
 
 	return (
 		<Box>
