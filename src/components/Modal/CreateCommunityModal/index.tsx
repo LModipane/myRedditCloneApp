@@ -17,7 +17,13 @@ import {
 	Flex,
 	Icon,
 } from '@chakra-ui/react';
-import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
+import {
+	doc,
+	getDoc,
+	runTransaction,
+	serverTimestamp,
+	setDoc,
+} from 'firebase/firestore';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { BsFillEyeFill, BsFillPersonFill } from 'react-icons/bs';
@@ -66,30 +72,41 @@ const CreateCommunityModal = ({ isOpen, onClose }: Props) => {
 		try {
 			//create community document in firestore
 			const communityDocRef = doc(firestore, 'communities', communityName); //this line create the firebase document reference, think of as the variable that store the document
-			const communityDoc = await getDoc(communityDocRef); //this line create the document data
 
-			//check that the community name is not taken
-			if (communityDoc.exists()) {
-				setErrorMessage(
-					`r/${communityName} is already taken. Try another community name`,
+			//let update the user document when we create the community document, this will be an all or nothing operation
+			await runTransaction(firestore, async transaction => {
+				const communityDoc = await transaction.get(communityDocRef); //this line create the document data
+				//check that the community name is not taken
+				if (communityDoc.exists()) {
+					setErrorMessage(
+						`r/${communityName} is already taken. Try another community name`,
+					);
+					setLoading(false);
+					return;
+				}
+
+				//create a new community in fire store
+				transaction.set(communityDocRef, {
+					creatorId: user?.uid,
+					createdAt: serverTimestamp(),
+					numberOfMembers: 1,
+					privacytype: communityType,
+				});
+
+				//let update the user document
+				transaction.set(
+					doc(firestore, `users/${user?.uid}/communitySnippet`, communityName),
+					{
+						communityId: communityName,
+						isModerator: true,
+					},
 				);
-				setLoading(false);
-				return;
-			}
-
-			//create a new community
-			await setDoc(communityDocRef, {
-				creatorId: user?.uid,
-				createdAt: serverTimestamp(),
-				numberOfMembers: 1,
-				privacytype: communityType,
 			});
-
-			setLoading(false);
 		} catch (error) {
 			console.log('handleCreateCommunity Error: ', error);
 			setErrorMessage('failed to create community');
 		}
+		setLoading(false);
 	};
 
 	return (
