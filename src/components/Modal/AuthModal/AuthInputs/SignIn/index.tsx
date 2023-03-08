@@ -50,7 +50,6 @@ const SignIn = (props: Props) => {
 		}
 	};
 
-	console.log(userError);
 
 	return (
 		<Box>
