@@ -6,6 +6,7 @@ import * as React from 'react';
 import safeJsonStringify from 'safe-json-stringify';
 import CommunityNotFound from '@/components/Community/NotFound';
 import Header from '@/components/Community/Header';
+import PageContent from '@/components/Layout/PageContent';
 
 export interface ICommunityPageProps {
 	communityData: Community;
@@ -15,7 +16,11 @@ export default function CommunityPage({ communityData }: ICommunityPageProps) {
     if (!communityData) return <CommunityNotFound />;
     
     return (<>
-        <Header communityData={communityData}/>
+        <Header communityData={communityData} />
+        <PageContent>
+            <></>
+            <></>
+        </PageContent>
     </>)
 }
 
