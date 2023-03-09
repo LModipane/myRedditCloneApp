@@ -5,6 +5,7 @@ import { GetServerSidePropsContext } from 'next';
 import * as React from 'react';
 import safeJsonStringify from 'safe-json-stringify';
 import CommunityNotFound from '@/components/Community/NotFound';
+import Header from '@/components/Community/Header';
 
 export interface ICommunityPageProps {
 	communityData: Community;
@@ -13,7 +14,9 @@ export interface ICommunityPageProps {
 export default function CommunityPage({ communityData }: ICommunityPageProps) {
     if (!communityData) return <CommunityNotFound />;
     
-    return <div>Welcome to { communityData.id}</div>
+    return (<>
+        <Header communityData={communityData}/>
+    </>)
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
