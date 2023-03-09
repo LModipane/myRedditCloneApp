@@ -1,3 +1,4 @@
+import useCommunityData from '@/hooks/useCommunityData';
 import { Community } from '@/lib/@types/types';
 import { Flex, Box, Icon, Image, Text, Button } from '@chakra-ui/react';
 import React from 'react';
@@ -8,7 +9,11 @@ type Props = {
 };
 
 const Header = ({ communityData }: Props) => {
-	const isJoined = false;
+	const { communityStateValue, handleJoinOrLeaveCommunity, loading } =
+		useCommunityData();
+	const isJoined = !!communityStateValue.mySnippet.find(
+		item => item.communityId === communityData.id,
+	);
 	return (
 		<Flex direction="column" width="100wh" height="146px">
 			<Box height="50%" bg="blue.400" />
@@ -40,7 +45,10 @@ const Header = ({ communityData }: Props) => {
 							variant={isJoined ? 'outline' : 'solid'}
 							height="36px"
 							px="6"
-							onClick={() => {}}>
+							isLoading={loading}
+							onClick={() =>
+								handleJoinOrLeaveCommunity(communityData, isJoined)
+							}>
 							{isJoined ? 'joined' : 'join'}
 						</Button>
 					</Flex>

@@ -2,8 +2,8 @@ import { atom } from 'recoil';
 
 export type CommunitySnippet = {
 	communityId: string;
-	isModerator: boolean;
-	imageUrl: string;
+	isModerator?: boolean;
+	imageUrl?: string;
 };
 
 export type CommunityState = {
