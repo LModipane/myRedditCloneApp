@@ -7,6 +7,7 @@ import safeJsonStringify from 'safe-json-stringify';
 import CommunityNotFound from '@/components/Community/NotFound';
 import Header from '@/components/Community/Header';
 import PageContent from '@/components/Layout/PageContent';
+import CreatePostForm from '@/components/Community/CreatePostForm';
 
 export interface ICommunityPageProps {
 	communityData: Community;
@@ -18,7 +19,10 @@ export default function CommunityPage({ communityData }: ICommunityPageProps) {
     return (<>
         <Header communityData={communityData} />
         <PageContent>
-            <></>
+            <>
+                <CreatePostForm/>
+            </>
+
             <></>
         </PageContent>
     </>)

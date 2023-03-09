@@ -36,7 +36,6 @@ const useCommunityData = () => {
 		}
 
     if (isJoined) {
-      console.log("leaving")
 			leaveCommunity(communityData.id);
 			return;
 		}
