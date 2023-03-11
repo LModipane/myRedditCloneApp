@@ -18,10 +18,12 @@ import Header from '@/components/Community/Header';
 import PageContent from '@/components/Layout/PageContent';
 import CreatePostForm from '@/components/Community/CreatePostForm';
 import Posts from '@/components/Post/Posts';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { postState } from '@/atoms/postState';
 import { ref, deleteObject } from 'firebase/storage';
 import usePost from '@/hooks/usePost';
+import { communityState } from '@/atoms/communityState';
+import AboutCommunity from '@/components/Community/About';
 
 export interface ICommunityPageProps {
 	community: Community;
@@ -32,17 +34,21 @@ export default function CommunityPage({
 	community,
 	posts,
 }: ICommunityPageProps) {
-	const {setPostState, postsState} = usePost()
+	const { setPostState, postsState } = usePost();
+	const setCommunitySetValue = useSetRecoilState(communityState);
 
 	useEffect(() => {
-		if (community)
+		if (community) {
 			setPostState(prev => ({
 				...prev,
 				posts,
 			}));
-	}, [community, posts, setPostState]);
-
-	
+			setCommunitySetValue(prev => ({
+				...prev,
+				myCurrentCommunity: community,
+			}));
+		}
+	}, [community, posts, setPostState, setCommunitySetValue]);
 
 	if (!community) return <CommunityNotFound />;
 
@@ -54,7 +60,7 @@ export default function CommunityPage({
 					<CreatePostForm />
 					<Posts posts={postsState.posts} />
 				</>
-
+				<AboutCommunity community={community}/>
 				<></>
 			</PageContent>
 		</>

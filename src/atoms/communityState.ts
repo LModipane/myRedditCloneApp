@@ -1,3 +1,4 @@
+import { Community } from '@/lib/@types/types';
 import { atom } from 'recoil';
 
 export type CommunitySnippet = {
@@ -8,6 +9,7 @@ export type CommunitySnippet = {
 
 export type CommunityState = {
 	mySnippet: CommunitySnippet[];
+	myCurrentCommunity?: Community;
 };
 
 const defaultCommunityState: CommunityState = {

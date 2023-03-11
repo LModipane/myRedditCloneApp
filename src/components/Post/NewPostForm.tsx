@@ -1,4 +1,5 @@
 import { firestore, storage } from '@/firebase/clientApp';
+import useSelectImage from '@/hooks/useSelectImage';
 import type { Post, TabItem as TabItemType } from '@/lib/@types/types';
 import { Alert, AlertIcon, Flex, Text } from '@chakra-ui/react';
 import { User } from 'firebase/auth';
@@ -50,7 +51,7 @@ const NewPostForm = ({ user }: Props) => {
 	const [selectedTab, setSelectedTab] = useState(tabs[0].title);
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
-	const [selectedFile, setSelectedFile] = useState<string>('');
+	const {selectedFile, setSelectedFile } = useSelectImage()
 	const [textInput, setTextInput] = useState({
 		title: '',
 		body: '',
