@@ -88,7 +88,7 @@ const NewPostForm = ({ user }: Props) => {
 			//check if there image
 			if (selectedFile) {
 				//if there is image store in firebase storage
-				const imageRef = ref(storage, `posts/${postDoc.id}/image;`);
+				const imageRef = ref(storage, `posts/${postDoc.id}/image`);
 				await uploadString(imageRef, selectedFile, 'data_url');
 				const downloadUrl = await getDownloadURL(imageRef);
 				//update post doc to include image url
@@ -96,14 +96,14 @@ const NewPostForm = ({ user }: Props) => {
 					imageUrl: downloadUrl,
 				});
 			}
+			//redirect user to community page
+			router.back();
 		} catch (error) {
 			console.log('submitPost error: ', error);
 			setErrorState(true);
 		}
 
 		setLoading(false);
-		//redirect user to community page
-		router.back();
 	};
 
 	return (

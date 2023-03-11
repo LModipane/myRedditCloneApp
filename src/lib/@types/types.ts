@@ -5,7 +5,7 @@ export type Community = {
 	id: string;
 	creatorId: string;
 	numberOfMembers: number;
-	createdAt?: Timestamp;
+	createdAt: Timestamp;
 	ImageUrl?: string;
 	privacyType: 'private' | 'restricted' | 'private';
 };

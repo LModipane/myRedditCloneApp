@@ -1,55 +1,107 @@
-import { firestore } from '@/firebase/clientApp';
-import { Community } from '@/lib/@types/types';
-import { doc, getDoc } from 'firebase/firestore';
+import { firestore, storage } from '@/firebase/clientApp';
+import { Community, Post } from '@/lib/@types/types';
+import {
+	collection,
+	deleteDoc,
+	doc,
+	getDoc,
+	getDocs,
+	orderBy,
+	query,
+	where,
+} from 'firebase/firestore';
 import { GetServerSidePropsContext } from 'next';
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import safeJsonStringify from 'safe-json-stringify';
 import CommunityNotFound from '@/components/Community/NotFound';
 import Header from '@/components/Community/Header';
 import PageContent from '@/components/Layout/PageContent';
 import CreatePostForm from '@/components/Community/CreatePostForm';
+import Posts from '@/components/Post/Posts';
+import { useRecoilState } from 'recoil';
+import { postState } from '@/atoms/postState';
+import { ref, deleteObject } from 'firebase/storage';
+import usePost from '@/hooks/usePost';
 
 export interface ICommunityPageProps {
-	communityData: Community;
+	community: Community;
+	posts: Post[];
 }
 
-export default function CommunityPage({ communityData }: ICommunityPageProps) {
-    if (!communityData) return <CommunityNotFound />;
-    
-    return (<>
-        <Header communityData={communityData} />
-        <PageContent>
-            <>
-                <CreatePostForm/>
-            </>
+export default function CommunityPage({
+	community,
+	posts,
+}: ICommunityPageProps) {
+	const {setPostState, postsState} = usePost()
 
-            <></>
-        </PageContent>
-    </>)
+	useEffect(() => {
+		if (community)
+			setPostState(prev => ({
+				...prev,
+				posts,
+			}));
+	}, [community, posts, setPostState]);
+
+	
+
+	if (!community) return <CommunityNotFound />;
+
+	return (
+		<>
+			<Header communityData={community} />
+			<PageContent>
+				<>
+					<CreatePostForm />
+					<Posts posts={postsState.posts} />
+				</>
+
+				<></>
+			</PageContent>
+		</>
+	);
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-    const { communityId: communityName } = context.query;
+	//get component page
+	const { communityId: communityName } = context.query;
 	try {
 		const communityDocRef = doc(
 			firestore,
 			'communities',
 			communityName as string,
 		);
-        const communityDoc = await getDoc(communityDocRef);
+		const communityDoc = await getDoc(communityDocRef);
+		const community = communityDoc.data()
+			? JSON.parse(
+					safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() }),
+			  )
+			: '';
+
+		//get community posts
+		const postsDocRef = collection(firestore, 'posts');
+		const postsQuery = query(
+			postsDocRef,
+			where('communityId', '==', communityName),
+			orderBy('createdAt', 'desc'),
+		);
+		const postDocs = await getDocs(postsQuery);
+		const posts = postDocs.docs.map(doc =>
+			JSON.parse(safeJsonStringify({ id: doc.id, ...doc.data() })),
+		);
+
 		return {
 			props: {
-				communityData: communityDoc.data()
-					? JSON.parse(
-							safeJsonStringify({
-								id: communityDoc.id,
-								...communityDoc.data(),
-							}),
-					  )
-					: '',
+				community,
+				posts,
 			},
 		};
 	} catch (error) {
 		console.log('Community Page getServerSide error: ', error);
+		return {
+			props: {
+				community: '',
+				posts: [],
+			},
+		};
 	}
 }

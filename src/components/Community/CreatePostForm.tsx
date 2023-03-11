@@ -68,8 +68,15 @@ const CreatePostForm = (props: Props) => {
 				mr="4"
 				color="gray.400"
 				cursor="pointer"
+				_hover={{ color: 'blue.500' }}
 			/>
-			<Icon as={BsLink45Deg} fontSize="24" color="gray.400" cursor="pointer" />
+			<Icon
+				as={BsLink45Deg}
+				fontSize="24"
+				color="gray.400"
+				cursor="pointer"
+				_hover={{ color: 'blue.500' }}
+			/>
 		</Flex>
 	);
 };
