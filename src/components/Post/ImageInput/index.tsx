@@ -66,6 +66,7 @@ const ImageInput = ({
 						hidden
 						ref={selectFileRef}
 						onChange={handleSelectedImage}
+						accept="image/x-png,image/gif,image/jpeg"
 					/>
 				</>
 			)}
